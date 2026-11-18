@@ -381,39 +381,42 @@ mark:focus-visible{outline:2px solid var(--header);outline-offset:2px}
 .sim-tr-dp:first-child{margin-top:0}
 
 /* ---------- immersive simulation window (Module 7) ---------- */
-/* One fixed-height window: name at the top, the conversation in the middle
-   (it scrolls inside the window, never the page), the choice in a tray at
-   the foot. The light blue panel with soft circles sets it apart from the
-   other activities; cards inside stay white for contrast. */
-.stage{position:relative;display:flex;flex-direction:column;height:min(46rem,calc(100vh - 7rem));height:min(46rem,calc(100dvh - 7rem));min-height:28rem;
-  border:1px solid #CFE5F2;border-radius:1.6rem;overflow:hidden;margin:.4rem 0 0;scroll-margin-top:5.2rem;
+/* One window per simulation: name at the top, the current exchange in the
+   middle, the choice at the foot. It grows to fit each beat (no scrolling
+   inside it) and keeps a steady minimum height so beats do not jump. The
+   light blue panel with soft circles sets it apart from the other
+   activities; cards inside stay white for contrast. */
+.stage{position:relative;display:flex;flex-direction:column;min-height:min(34rem,calc(100vh - 8rem));min-height:min(34rem,calc(100dvh - 8rem));
+  border:1px solid #CFE5F2;border-radius:1.6rem;overflow:hidden;margin:.4rem 0 0;scroll-margin-top:5rem;
   background:#EAF4FA url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%221920%22 height=%221080%22 viewBox=%220 0 1920 1080%22%3E%3Crect width=%221920%22 height=%221080%22 fill=%22%23EAF4FA%22/%3E%3Cg fill=%22%23FFFFFF%22 fill-opacity=%220.55%22%3E%3Ccircle cx=%221740%22 cy=%22110%22 r=%22380%22/%3E%3Ccircle cx=%221210%22 cy=%22330%22 r=%2295%22/%3E%3Ccircle cx=%22150%22 cy=%221010%22 r=%22300%22/%3E%3Ccircle cx=%22560%22 cy=%22985%22 r=%2270%22/%3E%3C/g%3E%3C/svg%3E") center/cover no-repeat;
   box-shadow:0 22px 50px -28px rgba(34,34,34,.38)}
 .has-stage .col{max-width:52rem}
 #stream[data-top="bare"]>.blk.has-stage:first-child{padding-top:5.2rem}
-.stage-head{flex:none;display:flex;align-items:center;gap:.8rem;padding:.75rem 1.2rem;background:var(--white);border-bottom:1px solid #CFE5F2}
+.stage-head{flex:none;display:flex;align-items:center;gap:.8rem;padding:.7rem 1.2rem;background:var(--white);border-bottom:1px solid #CFE5F2}
 .stage-head .who{flex:1;min-width:0}
 .stage-head .nm{font-size:1.08rem;margin:0;letter-spacing:0;line-height:1.2}
 .stage-head .sub{font-family:var(--sans);font-size:.78rem;color:var(--muted)}
 .stage-histbtn{margin:0}
-.stage-body:focus-visible{outline:2px solid var(--team);outline-offset:-4px;border-radius:.4rem}
-.stage-body{flex:1;min-height:0;overflow-y:auto;padding:1.3rem 1.4rem;overscroll-behavior:contain}
-.stage-tray{flex:none;max-height:62%;overflow-y:auto;background:var(--white);border-top:1px solid #CFE5F2;padding:1rem 1.4rem 1.1rem;overscroll-behavior:contain}
+.stage-body{flex:1;padding:1.2rem 1.4rem}
+.stage-body[hidden],.stage-tray[hidden]{display:none}
+.stage-tray{flex:none;background:var(--white);border-top:1px solid #CFE5F2;padding:1rem 1.4rem 1.1rem}
 .stage-tray:empty{display:none}
 .stage-tray .imm-next{margin:0}
 .stage-q .prompt{font-family:var(--sans);font-size:1.05rem;color:var(--header);font-weight:500;margin:0 0 .7rem;line-height:1.4}
-.stage-q .opt{padding:.65rem .85rem}
-.stage .audio{margin:0 0 .4rem}
+.stage-q .opts{gap:.5rem}
+.stage-q .opt{padding:.6rem .85rem;line-height:1.45}
+.stage .audio{margin:0}
 .stage .audio .bar{background:var(--white);border-color:#CFE5F2}
 .stage .audio .thread{background:var(--white);border:1px solid #CFE5F2;padding:1rem 1.15rem;margin:.7rem 0 0}
 .stage .transbtn{background:var(--white)}
 .stage .imm-said{margin:0 0 1rem auto}
 .stage-body>.thread{background:transparent;border:0;padding:0;margin:0}
-.stage.text .thread .ch{text-align:center}
+.stage.text .stage-body>.thread .ch{text-align:center}
 .stage .bubble.them{border-color:#CFE5F2}
-.stage-note{background:var(--white);border:1px solid #CFE5F2;border-radius:1rem;padding:.8rem 1rem;margin:.9rem 0}
+.stage-note{background:var(--white);border:1px solid #CFE5F2;border-radius:1rem;padding:.8rem 1rem;margin:.9rem 0 0}
 .stage-note .note{margin:0}
-.stage-start{min-height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:.25rem;padding:1rem}
+.stage-start{min-height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:.25rem;padding:2rem 1rem}
+.stage-body:has(.stage-start){display:flex;flex-direction:column;justify-content:center}
 .stage-start .avatar.big{width:5.4rem;height:5.4rem;font-size:1.9rem;background:var(--white);margin-bottom:.6rem}
 .stage-start .nm2{font-family:var(--sans);font-size:1.5rem;font-weight:500;color:var(--header);margin:0}
 .stage-start .sub{font-family:var(--sans);font-size:.9rem;color:var(--muted);margin:0 0 1.3rem}
@@ -421,17 +424,15 @@ mark:focus-visible{outline:2px solid var(--header);outline-offset:2px}
 .stage-end h3{margin:0 0 .6rem}
 .stage-end .sim-trans{margin-top:1.1rem}
 .stage-end .sim-trans .thread{background:var(--convo);border:1px solid var(--convo-line);padding:1rem 1.15rem}
-.stage-hist{position:absolute;inset:0;z-index:3;background:var(--white);display:flex;flex-direction:column}
+.stage-hist{flex:1;padding:1.2rem 1.4rem;background:var(--white)}
 .stage-hist[hidden]{display:none}
-.stage-hist-head{flex:none;display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.8rem 1.2rem;border-bottom:1px solid var(--border)}
-.stage-hist-head h3,.stage-hist-head h4{margin:0;font-size:1.05rem}
-.stage-hist-body{flex:1;min-height:0;overflow-y:auto;padding:1rem 1.2rem}
-.stage-hist-body .thread{background:var(--convo);border:1px solid var(--convo-line);padding:1rem 1.15rem;margin:0}
+.stage-hist h3,.stage-hist h4{margin:0 0 .8rem;font-size:1.05rem}
+.stage-hist .thread{background:var(--convo);border:1px solid var(--convo-line);padding:1rem 1.15rem;margin:0 0 1rem}
 @media (max-width:760px){
-  .stage{height:calc(100vh - 5.4rem);height:calc(100dvh - 5.4rem);border-radius:1.1rem;margin:0 -.5rem}
+  .stage{border-radius:1.1rem;margin:0 -.5rem}
   .stage-head{padding:.6rem .8rem}
-  .stage-body{padding:1rem .85rem}
-  .stage-tray{padding:.8rem .85rem .9rem;max-height:66%}
+  .stage-body,.stage-hist{padding:1rem .85rem}
+  .stage-tray{padding:.8rem .85rem .9rem}
   .stage-histbtn{font-size:.78rem;padding:.32rem .75rem}
 }
 
@@ -2655,9 +2656,9 @@ function convoEl(cfg, onDone){
    markers (`dp`) and every line said or sent. Notes shown during the
    simulation (`note`) stay out of it. Offered at every ending to read,
    download as a text file or copy. */
-function logThread(log, isText){
+function logThread(log, isText, dps){
   const th=el('div','thread');
-  log.forEach(l=>{ if(l.note) return; if(l.dp) th.append(el('p','sim-tr-dp',H(l.dp))); else th.append(lineEl(l,isText)); });
+  log.forEach(l=>{ if(l.note) return; if(l.dp){ if(dps!==false) th.append(el('p','sim-tr-dp',H(l.dp))); } else th.append(lineEl(l,isText)); });
   return th;
 }
 function simTranscript(cfg, log, isText){
@@ -2696,25 +2697,28 @@ function simTranscript(cfg, log, isText){
 }
 
 /* ---------- immersive simulation (Module 7) ---------- */
-/* A `convo` with `immersive:true` (and a `person`) runs in its own window
-   rather than down the page: a fixed-height panel with the person's name at
-   the top, the conversation in the middle and the choice in a tray at the
-   foot. It opens on a start screen.
-   - A call shows one exchange at a time: what the person says (a large
-     player, transcript collapsed), then the choice; after a choice, the
-     learner's words and the person's reaction, then Continue. The choice
-     waits until a clip ends or its transcript is opened; a placeholder
-     shows it at once. A chosen reaction plays straight away.
-   - A text interaction keeps one thread that grows inside the window, with
-     messages arriving one at a time ("Show all messages" in the tray).
-   - "Conversation so far" opens the route taken, over the window, at any
-     point (the client asked that immersive pieces can go back to earlier
-     content). Escape or Close returns.
+/* A `convo` with `immersive:true` (and a `person`) runs in its own window: a
+   panel with the person's name at the top, the current exchange in the
+   middle and the choice at the foot. It opens on a start screen. One beat
+   shows at a time: each Continue replaces the window's contents and brings
+   the window back to the top of the screen, so the page never fills up with
+   earlier turns. The window grows to fit the beat rather than scrolling
+   inside itself, so nothing is boxed into a small scrolling area on a laptop.
+   - A call shows what the person says (a large player, transcript
+     collapsed), then the choice; after a choice, the learner's words and the
+     person's reaction, then Continue. The choice waits until a clip ends or
+     its transcript is opened; a placeholder shows it at once. A chosen
+     reaction plays straight away.
+   - A text interaction shows the learner's last message and the reply it
+     drew, then the new messages arriving one at a time ("Show all messages"
+     at the foot).
+   - "Conversation so far" shows the route taken in place of the current
+     beat (the client asked that immersive pieces can go back to earlier
+     content). Close or Escape returns. It carries no decision-point labels.
    - Nodes take the same shape as an ordinary `convo`. `dp` names a
-     decision point in the transcript only; nothing on screen labels it.
-     `blocksAfter` notes sit in the conversation. Endings (`done`) replace
-     the conversation with their text, `back` (rewind), the transcript and
-     `restart`.
+     decision point in the end-of-simulation transcript only. `blocksAfter`
+     notes sit in the conversation. Endings (`done`) show their text, `back`
+     (rewind), the transcript and `restart`.
    The page's Continue button waits for an ending, as with any `convo`. */
 function stageEl(cfg, onDone, HL){
   const isText=cfg.ch==='Text', P=cfg.person;
@@ -2724,18 +2728,23 @@ function stageEl(cfg, onDone, HL){
   const head=el('div','stage-head','<div class="avatar" aria-hidden="true">'+P.init+'</div>'+
     '<div class="who"><h'+HL+' class="nm">'+P.name+'</h'+HL+'><span class="sub">'+SUB(P.sub)+'</span></div>');
   const histBtn=el('button','transbtn stage-histbtn','Conversation so far'); histBtn.type='button'; histBtn.hidden=true;
+  histBtn.setAttribute('aria-expanded','false');
   head.append(histBtn);
   const body=el('div','stage-body'), tray=el('div','stage-tray');
-  /* the conversation scrolls inside the window, so it can take focus for keyboard scrolling */
-  body.tabIndex=0; body.setAttribute('role','region'); body.setAttribute('aria-label','Conversation');
-  const hist=el('div','stage-hist'); hist.hidden=true;
+  const hist=el('div','stage-hist'); hist.hidden=true; hist.id=uid('sh');
   hist.setAttribute('role','region'); hist.setAttribute('aria-label','Conversation so far');
+  histBtn.setAttribute('aria-controls',hist.id);
   W.append(head, body, tray, hist);
   const defCta=cfg.cta||(isText?'Continue the conversation':'Continue the call');
-  let clock, log, marks, thread=null;
+  let clock, log, marks, thread=null, lastTurn=[], following=false;
   const btn=(label,cls,fn)=>{ const b=el('button','btn '+(cls||'yellow small'),label); b.type='button'; b.onclick=fn; return b; };
   const instr=t=>el('p','instr','<em>'+H(t)+'</em>');
-  const follow=()=>{ body.scrollTo({top:body.scrollHeight, behavior:REDUCED?'auto':'smooth'}); };
+  const toTop=()=>{ const r=W.getBoundingClientRect(); if(r.top<0 || r.top>innerHeight*0.4) reveal(W,'start'); };
+  /* As messages arrive one at a time, keep the newest one on screen. When
+     they appear all at once (reduced motion, "Show all messages") the page
+     stays put, so the beat reads from its first message. */
+  const follow=()=>{ if(!following) return; const last=thread && thread.lastElementChild; if(!last) return;
+    const r=last.getBoundingClientRect(); if(r.bottom>innerHeight-16) window.scrollBy({top:r.bottom-innerHeight+32, behavior:REDUCED?'auto':'smooth'}); };
   const ensureThread=()=>{
     if(!thread || !thread.isConnected){
       thread=el('div','thread','<p class="ch">Text conversation</p>'); body.append(thread);
@@ -2744,7 +2753,8 @@ function stageEl(cfg, onDone, HL){
     return thread;
   };
   const noteEl=bl=>{ const box=el('div','stage-note'); blocks(bl, box); return box; };
-  const reset=()=>{ stopAudio(); clock=clockFrom(cfg.startTime); log=[]; marks={}; thread=null; body.innerHTML=''; tray.innerHTML=''; histBtn.hidden=true; };
+  const reset=()=>{ stopAudio(); closeHist(true); clock=clockFrom(cfg.startTime); log=[]; marks={}; thread=null; lastTurn=[];
+    body.innerHTML=''; tray.innerHTML=''; histBtn.hidden=true; };
 
   /* Deliver lines, then run `then(had)`: `had` is true when focus sat on a
      control that has now gone, so the next control should take it. */
@@ -2754,19 +2764,17 @@ function stageEl(cfg, onDone, HL){
     if(isText){
       const th=ensureThread();
       const row=el('div','imm-next'); let t;
-      row.append(btn('Show all messages','ghost small',()=>t.skip())); tray.append(row);
-      t=typeLines(th, stamped, true, ()=>{ const had=row.contains(document.activeElement); row.remove(); follow(); then(had); });
-      return th;
+      row.append(btn('Show all messages','ghost small',()=>{ following=false; t.skip(); })); tray.append(row);
+      following=!REDUCED;
+      t=typeLines(th, stamped, true, ()=>{ following=false; const had=row.contains(document.activeElement); row.remove(); then(had); });
+      return {node:th, lines:stamped};
     }
     let fired=false; const go=()=>{ if(!fired){ fired=true; then(false); } };
-    /* Opening the transcript brings it into view inside the window. */
-    const show=()=>requestAnimationFrame(()=>{ const t=a.querySelector('.thread'); if(!t) return;
-      body.scrollTo({top:t.getBoundingClientRect().top-body.getBoundingClientRect().top+body.scrollTop-12, behavior:REDUCED?'auto':'smooth'}); });
-    const a=audioEl({label, src, big:true, transcript:threadEl({ch:'Voice call', noCh:true, lines:stamped}), onEnd:go, onTranscript:()=>{ go(); show(); }});
-    a.querySelector('.transbtn').addEventListener('click',()=>{ if(a.querySelector('.thread').offsetParent) show(); });
+    const a=audioEl({label, src, big:true, transcript:threadEl({ch:'Voice call', noCh:true, lines:stamped}), onEnd:go,
+      onTranscript:()=>{ go(); requestAnimationFrame(()=>{ const t=a.querySelector('.thread'); if(t) t.scrollIntoView({block:'nearest', behavior:REDUCED?'auto':'smooth'}); }); }});
     body.append(a);
     if(!a._player) go(); else if(auto) a._player.play();
-    return a;
+    return {node:a, lines:stamped};
   };
 
   const question=(n, had)=>{
@@ -2776,7 +2784,6 @@ function stageEl(cfg, onDone, HL){
       const b=el('button','opt','<span class="key">'+o.k+'</span><span>'+H(o.t)+'</span>'); b.type='button';
       b.onclick=()=>choose(o); list.append(b);
     });
-    tray.scrollTop=0;
     if(had) focusTo(list.querySelector('.opt'));
   };
 
@@ -2787,12 +2794,14 @@ function stageEl(cfg, onDone, HL){
     if(!isText){
       body.innerHTML='';
       body.append(el('div','imm-said','<span class="lbl">'+(said.length?'Your response':'What you do')+'</span>'+H(said.length?said[0].t:o.t)));
+      toTop();
     }
-    const target=deliver(turn, cfg.audioLabel||('How '+P.name+' responds'), o.audio, true, had=>{
+    const got=deliver(turn, cfg.audioLabel||('How '+P.name+' responds'), o.audio, true, had=>{
       const b=btn(o.cta||defCta,null,()=>go(o.next)); tray.append(b); if(had) focusTo(b);
     });
+    lastTurn=got.lines;
     if(isText) focusTo(tray.querySelector('button'));
-    else focusTo(target.querySelector('button.play')||body.querySelector('.imm-said'));
+    else focusTo(got.node.querySelector('button.play')||body.querySelector('.imm-said'));
   };
 
   const endView=n=>{
@@ -2804,21 +2813,23 @@ function stageEl(cfg, onDone, HL){
     }
     if(cfg.transcript) v.append(simTranscript(cfg, log, isText));
     if(cfg.restart){ const r=el('div','sim-row'); r.append(btn(cfg.restart,'ghost small',()=>{ reset(); go(cfg.start); })); v.append(r); }
-    body.append(v); body.scrollTop=0;
+    body.append(v);
     if(onDone) onDone();
   };
 
   const runNode=id=>{
     const n=cfg.nodes[id]; if(!n) return;
-    stopAudio();
+    stopAudio(); closeHist(true);
     marks[id]={log:log.length, clock:clock&&clock.m};
     if(n.dp) log.push({dp:n.dp});
-    tray.innerHTML='';
-    if(!isText || n.done){ body.innerHTML=''; }
-    if(n.done){ thread=null; endView(n); return; }
+    tray.innerHTML=''; body.innerHTML=''; thread=null;
+    if(n.done){ lastTurn=[]; endView(n); return; }
+    /* a text beat opens with the last exchange, for context */
+    if(isText && lastTurn.length){ const th=ensureThread(); lastTurn.forEach(l=>th.append(lineEl(l,true))); }
+    lastTurn=[];
     if(n.blocks) (isText?ensureThread():body).append(noteEl(n.blocks));
     const after=had=>{
-      if(n.blocksAfter){ (isText?ensureThread():body).append(noteEl(n.blocksAfter)); log.push({note:true, blocks:n.blocksAfter}); follow(); }
+      if(n.blocksAfter){ (isText?ensureThread():body).append(noteEl(n.blocksAfter)); log.push({note:true, blocks:n.blocksAfter}); }
       if(!n.options){ const b=btn(n.cta||defCta,null,()=>go(n.next)); tray.append(b); if(had) focusTo(b); return; }
       question(n, had);
     };
@@ -2826,41 +2837,46 @@ function stageEl(cfg, onDone, HL){
     else after(false);
   };
 
-  /* Run a node and put focus where the learner needs it next. */
+  /* Run a node, bring the window to the top of the screen, and put focus
+     where the learner needs it next. */
   const go=id=>{
-    runNode(id);
+    runNode(id); toTop();
     focusTo(body.querySelector('.stage-end h3') ||
       (isText ? tray.querySelector('button') :
         (body.querySelector('.audio button.play') || body.querySelector('.audio') || tray.querySelector('button'))));
   };
 
-  /* Back to a decision as it stood when first reached. A text thread is
-     rebuilt from the record, so the learner sees the conversation up to it. */
+  /* Back to a decision as it stood when first reached. */
   const rewind=id=>{
     const m=marks[id]; if(!m) return;
-    stopAudio(); log.length=m.log; if(clock) clock.m=m.clock;
-    body.innerHTML=''; thread=null;
-    if(isText){ const th=ensureThread(); log.forEach(l=>{ if(l.dp) return; th.append(l.note?noteEl(l.blocks):lineEl(l,true)); }); }
-    go(id); follow();
+    stopAudio(); log.length=m.log; if(clock) clock.m=m.clock; lastTurn=[];
+    go(id);
   };
 
-  /* The route so far, over the window. */
-  const closeHist=()=>{ hist.hidden=true; [head,body,tray].forEach(x=>x.inert=false); histBtn.focus(); };
+  /* The route so far, shown in place of the current beat. */
+  function closeHist(quiet){
+    if(hist.hidden) return;
+    hist.hidden=true; body.hidden=false; tray.hidden=false;
+    histBtn.textContent='Conversation so far'; histBtn.setAttribute('aria-expanded','false');
+    if(!quiet) histBtn.focus();
+  }
   histBtn.onclick=()=>{
+    if(!hist.hidden){ closeHist(); return; }
     hist.innerHTML='';
-    const h=el('div','stage-hist-head'); const t=el('h'+(HL+1),null,'Conversation so far');
-    h.append(t, btn('Close','ghost small',closeHist));
-    const sc=el('div','stage-hist-body'); sc.append(logThread(log,isText));
-    hist.append(h,sc); hist.hidden=false; [head,body,tray].forEach(x=>x.inert=true);
-    focusTo(t); sc.scrollTop=sc.scrollHeight;
+    const t=el('h'+(HL+1),null,'Conversation so far');
+    const th=logThread(log,isText,false);
+    hist.append(t, th, el('div','sim-row')); hist.lastChild.append(btn('Back to the conversation','ghost small',()=>closeHist()));
+    hist.hidden=false; body.hidden=true; tray.hidden=true;
+    histBtn.textContent='Back to the conversation'; histBtn.setAttribute('aria-expanded','true');
+    toTop(); focusTo(t);
   };
-  hist.addEventListener('keydown',e=>{ if(e.key==='Escape'){ e.stopPropagation(); closeHist(); } });
+  W.addEventListener('keydown',e=>{ if(e.key==='Escape' && !hist.hidden){ e.stopPropagation(); closeHist(); } });
 
   /* Start screen */
   reset();
   const s=el('div','stage-start','<div class="avatar big" aria-hidden="true">'+P.init+'</div>'+
     '<p class="nm2">'+P.name+'</p><p class="sub">'+SUB(P.sub)+'</p>');
-  s.append(btn(cfg.startLabel||(isText?'Start the conversation':'Start the call'),'yellow',()=>{ body.innerHTML=''; go(cfg.start); reveal(W,'start'); }));
+  s.append(btn(cfg.startLabel||(isText?'Start the conversation':'Start the call'),'yellow',()=>{ go(cfg.start); }));
   body.append(s);
   return W;
 }
